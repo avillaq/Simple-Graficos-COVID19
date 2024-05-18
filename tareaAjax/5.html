@@ -24,64 +24,75 @@
 <body>
     <h1>Grafico comparativo entre regiones</h1>
 
-    <div id="chart_div"></div>
+    <div id="graficos"></div>
 
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', init);
         function init() {
-            google.charts.load('current', { packages: ['corechart', 'line'] });
-            google.charts.setOnLoadCallback(drawBasic);
+            const graficos = document.querySelector('#graficos');
 
-            function drawBasic() {
-
-                var dataTable = new google.visualization.DataTable();
-                dataTable.addColumn('string', 'fecha');
-
-                // Peticion AJAX
-                let datosRegiones = []
-
-                const request = {
-                    method: 'GET'
-                }
-                fetch("/data.json", request)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(i => {
-                            dataTable.addColumn("number", i.region);
-                        });
+            // Peticion AJAX
+            const request = {
+                method: 'GET'
+            }
+            fetch("/data.json", request)
+                .then(response => response.json())
+                .then(data => {
+                    for (let i = 0; i < data.length; i+=2) {
+                        let region1 = data[i].region;
+                        let region2 = data[i+1].region;
                         
-                        let numeroTotalDias = data[0].confirmed.length;
-                        for (let i = 0; i < numeroTotalDias; i++) {
-                            let fila = [data[0].confirmed[i].date];
-                            data.forEach(region => {
-                                fila.push(parseInt(region.confirmed[i].value));
-                            });
-                            datosRegiones.push(fila);
-                        }
+                        let div = document.createElement('div');
+                        div.getAttribute('id', region1 + region2);
+                        graficos.appendChild(div);
+ 
+                    }
 
-                        dataTable.addRows(datosRegiones);
+                    let numeroTotalDias = data[0].confirmed.length;
+                    for (let i = 0; i < numeroTotalDias; i++) {
+                        let fila = [data[0].confirmed[i].date];
+                        data.forEach(region => {
+                            fila.push(parseInt(region.confirmed[i].value));
+                        });
+                        datosRegiones.push(fila);
+                    }
+                });
+            function crearGrafico(region1, region2) {
+                google.charts.load('current', { packages: ['corechart', 'line'] });
+                google.charts.setOnLoadCallback(drawBasic);
 
-                        var options = {
-                            hAxis: {
-                                title: 'Fecha desde Marzo 6 hasta Mayo 9'
-                            },
-                            vAxis: {
-                                title: 'Confirmados'
-                            },
-                            'width': 1500,
-                            'height': 600
-                        };
+                function drawBasic() {
 
-                        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                    var dataTable = new google.visualization.DataTable();
+                    dataTable.addColumn('string', 'fecha');
 
-                        chart.draw(dataTable, options);
 
-                    });
 
+                    dataTable.addRows(datosRegiones);
+
+                    var options = {
+                        hAxis: {
+                            title: 'Fecha desde Marzo 6 hasta Mayo 9'
+                        },
+                        vAxis: {
+                            title: 'Confirmados'
+                        },
+                        'width': 1500,
+                        'height': 600
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+                    chart.draw(dataTable, options);
+
+
+
+                }
 
             }
+
         }
 
     </script>
