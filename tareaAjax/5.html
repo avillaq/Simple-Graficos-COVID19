@@ -51,10 +51,13 @@
                         data.forEach(i => {
                             dataTable.addColumn("number", i.region);
                         });
+                        
                         let numeroTotalDias = data[0].confirmed.length;
                         for (let i = 0; i < numeroTotalDias; i++) {
                             let fila = [data[0].confirmed[i].date];
-                
+                            data.forEach(region => {
+                                fila.push(parseInt(region.confirmed[i].value));
+                            });
                         }
 
                         dataTable.addRows(datosArequipa);
