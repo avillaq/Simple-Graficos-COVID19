@@ -56,6 +56,10 @@
                                     max = j;
                                 }
                             });
+                            const li = document.createElement('li');
+                            li.textContent = max.region + '  ---->  ' + max.totalConfirmados;
+                            ul.appendChild(li);
+                            
 
                         }
                         
