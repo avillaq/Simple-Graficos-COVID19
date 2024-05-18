@@ -26,7 +26,13 @@
                     data => {
                         const lista = document.querySelector('#lista');
                         const ul = document.createElement('ul');
-                        
+                        data.forEach(i => {
+                            const li = document.createElement('li');
+                            li.textContent = i.region;
+                            ul.appendChild(li);
+                        });
+                        lista.appendChild(ul);
+                    
                     }
                 ).catch(
                     error => console.error(error)
