@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <h1>Lista de Regiones</h1>
+    <h1>Numero de confirmados por region</h1>
     <div id="lista" class="lista">
 
     </div>
@@ -40,8 +40,11 @@
                         const ul = document.createElement('ul');
                         let totalComfirmados = 0;
                         data.forEach(i => {
+                            i.confirmed.forEach(j => {
+                                totalComfirmados += j;
+                            });
                             const li = document.createElement('li');
-                            li.textContent = i.region + '==>' ;
+                            li.textContent = i.region + '  -->  ' + totalComfirmados;
                             ul.appendChild(li);
                         });
                         lista.appendChild(ul);
