@@ -38,14 +38,15 @@
                     data => {
                         const lista = document.querySelector('#lista');
                         const ul = document.createElement('ul');
-                        let totalComfirmados = 0;
+                        let totalConfirmados = 0;
                         let totalRegiones = [];
                         
                         data.forEach(i => {
                             i.confirmed.forEach(j => {
-                                totalComfirmados += parseInt(j.value);
+                                totalConfirmados += parseInt(j.value);
                             });
-                            totalComfirmados = 0;
+                            totalRegiones.push({region: i.region, total: totalConfirmados});
+                            totalConfirmados = 0;
                         });
                     
                     }
