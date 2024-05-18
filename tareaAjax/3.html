@@ -59,8 +59,9 @@
                             const li = document.createElement('li');
                             li.textContent = max.region + '  ---->  ' + max.totalConfirmados;
                             ul.appendChild(li);
-                            
 
+                            let indiceMax = totalRegiones.indexOf(max);
+                            totalRegiones.splice(indiceMax, 1);
                         }
                         
                     
