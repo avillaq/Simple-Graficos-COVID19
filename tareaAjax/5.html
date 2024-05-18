@@ -43,12 +43,27 @@
                     for (let i = 0; i < data.length; i+=2) {
                         let region1 = data[i].region;
                         let region2 = data[i+1].region;
-                        
+
                         let div = document.createElement('div');
                         div.getAttribute('id', region1 + region2);
                         graficos.appendChild(div);
- 
+                        
+                        crearGrafico(region1, region2);
                     }
+
+                    
+                });
+            function crearGrafico(region1, region2) {
+                google.charts.load('current', { packages: ['corechart', 'line'] });
+                google.charts.setOnLoadCallback(drawBasic);
+
+                function drawBasic() {
+                    var dataTable = new google.visualization.DataTable();
+                    dataTable.addColumn('string', 'fecha');
+                    dataTable.addColumn('number', region1.region);
+                    dataTable.addColumn('number', region2.region);
+
+                    let datosRegiones = [];
 
                     let numeroTotalDias = data[0].confirmed.length;
                     for (let i = 0; i < numeroTotalDias; i++) {
@@ -58,17 +73,6 @@
                         });
                         datosRegiones.push(fila);
                     }
-                });
-            function crearGrafico(region1, region2) {
-                google.charts.load('current', { packages: ['corechart', 'line'] });
-                google.charts.setOnLoadCallback(drawBasic);
-
-                function drawBasic() {
-
-                    var dataTable = new google.visualization.DataTable();
-                    dataTable.addColumn('string', 'fecha');
-
-
 
                     dataTable.addRows(datosRegiones);
 
