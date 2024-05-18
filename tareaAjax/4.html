@@ -37,7 +37,7 @@
             function drawBasic() {
 
                 var data = new google.visualization.DataTable();
-                data.addColumn('number', 'X');
+                data.addColumn('string', 'X');
                 data.addColumn('number', 'Confirmados');
 
                 // Peticion AJAX
@@ -51,6 +51,10 @@
                     .then(data => {
                         let arequipa = data.filter(d => d.region == "Arequipa")
                         let listaConfirmados = arequipa.confirmed
+
+                        listaConfirmados.forEach(i => {
+                            datosArequipa.push([i.date, parseInt(i.value)]);
+                        });
 
                     });
 
