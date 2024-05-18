@@ -58,9 +58,10 @@
                             data.forEach(region => {
                                 fila.push(parseInt(region.confirmed[i].value));
                             });
+                            datosRegiones.push(fila);
                         }
 
-                        dataTable.addRows(datosArequipa);
+                        dataTable.addRows(datosRegiones);
 
                         var options = {
                             hAxis: {
