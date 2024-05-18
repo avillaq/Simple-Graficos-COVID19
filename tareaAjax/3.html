@@ -57,14 +57,14 @@
                                 }
                             });
                             const li = document.createElement('li');
-                            li.textContent = max.region + '  ---->  ' + max.totalConfirmados;
+                            li.textContent = max.region + '  ---->  ' + max.total;
                             ul.appendChild(li);
 
                             let indiceMax = totalRegiones.indexOf(max);
                             totalRegiones.splice(indiceMax, 1);
                         }
+                        lista.appendChild(ul);
                         
-                    
                     }
                 ).catch(
                     error => console.error(error)
