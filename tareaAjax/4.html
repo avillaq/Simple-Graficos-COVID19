@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <h1>Grafico de tiempo del numero de confirmados en Arequipa</h1>
+    <h1>Grafico de tiempo del numero de confirmados en Arequipa 2020</h1>
 
     <div id="chart_div"></div>
 
@@ -36,9 +36,9 @@
 
             function drawBasic() {
 
-                var data = new google.visualization.DataTable();
-                data.addColumn('string', 'X');
-                data.addColumn('number', 'Confirmados');
+                var dataTable = new google.visualization.DataTable();
+                dataTable.addColumn('string', 'X');
+                dataTable.addColumn('number', 'Confirmados');
 
                 // Peticion AJAX
                 let datosArequipa = []
@@ -49,29 +49,33 @@
                 fetch("/data.json", request)
                     .then(response => response.json())
                     .then(data => {
-                        let arequipa = data.filter(d => d.region == "Arequipa")
+                        let arequipa = data.filter(d => d.region == "Arequipa")[0]
                         let listaConfirmados = arequipa.confirmed
 
                         listaConfirmados.forEach(i => {
                             datosArequipa.push([i.date, parseInt(i.value)]);
                         });
 
+                        dataTable.addRows(datosArequipa);
+
+                        var options = {
+                            hAxis: {
+                                title: 'Fecha desde Marzo 6 hasta Mayo 9'
+                            },
+                            vAxis: {
+                                title: 'Confirmados'
+                            },
+                            'width':1500,
+                            'height':600
+                        };
+
+                        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+                        chart.draw(dataTable, options);
+
                     });
 
-                data.addRows(datosArequipa);
 
-                var options = {
-                    hAxis: {
-                        title: 'Fecha'
-                    },
-                    vAxis: {
-                        title: 'Confirmados'
-                    }
-                };
-
-                var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-
-                chart.draw(data, options);
             }
         }
 
