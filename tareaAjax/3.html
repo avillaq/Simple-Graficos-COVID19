@@ -48,6 +48,17 @@
                             totalRegiones.push({region: i.region, total: totalConfirmados});
                             totalConfirmados = 0;
                         });
+
+                        for (let i = 0; i < 10; i++) {
+                            let max = totalRegiones[0];
+                            totalRegiones.forEach(j => {
+                                if (j.total > max.total) {
+                                    max = j;
+                                }
+                            });
+
+                        }
+                        
                     
                     }
                 ).catch(
