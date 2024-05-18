@@ -41,10 +41,10 @@
                         let totalComfirmados = 0;
                         data.forEach(i => {
                             i.confirmed.forEach(j => {
-                                totalComfirmados += j;
+                                totalComfirmados += parseInt(j.value);
                             });
                             const li = document.createElement('li');
-                            li.textContent = i.region + '  -->  ' + totalComfirmados;
+                            li.textContent = i.region + '  ---->  ' + totalComfirmados;
                             ul.appendChild(li);
                         });
                         lista.appendChild(ul);
