@@ -49,7 +49,8 @@
                 fetch("/data.json", request)
                     .then(response => response.json())
                     .then(data => {
-                        
+                        let arequipa = data.filter(d => d.region == "Arequipa")
+                        let listaConfirmados = arequipa.confirmed
 
                     });
 
