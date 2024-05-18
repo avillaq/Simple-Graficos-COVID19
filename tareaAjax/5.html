@@ -40,7 +40,7 @@
                 dataTable.addColumn('string', 'fecha');
 
                 // Peticion AJAX
-                let datosArequipa = []
+                let datosRegiones = []
 
                 const request = {
                     method: 'GET'
@@ -51,10 +51,11 @@
                         data.forEach(i => {
                             dataTable.addColumn("number", i.region);
                         });
-                        
-                        listaConfirmados.forEach(i => {
-                            datosArequipa.push([i.date, parseInt(i.value)]);
-                        });
+                        let numeroTotalDias = data[0].confirmed.length;
+                        for (let i = 0; i < numeroTotalDias; i++) {
+                            let fila = [data[0].confirmed[i].date];
+                
+                        }
 
                         dataTable.addRows(datosArequipa);
 
