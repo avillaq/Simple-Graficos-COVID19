@@ -85,7 +85,7 @@
                         'height': 600
                     };
 
-                    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                    var chart = new google.visualization.LineChart(document.getElementById(`${region1.region}-${region2.region}`));
 
                     chart.draw(dataTable, options);
 
