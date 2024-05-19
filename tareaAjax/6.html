@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <h1>Grafico comparativo entre regiones</h1>
+    <h1>Grafico comparativo entre regiones excepto Lima y Callao</h1>
 
     <div id="chart_div"></div>
 
@@ -48,6 +48,8 @@
                 fetch("/data.json", request)
                     .then(response => response.json())
                     .then(data => {
+                        data = data.filter(region => region.region != 'Lima' && region.region != 'Callao');
+
                         data.forEach(i => {
                             dataTable.addColumn("number", i.region);
                         });
