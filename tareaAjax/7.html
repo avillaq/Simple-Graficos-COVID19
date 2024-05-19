@@ -17,12 +17,24 @@
         .lista {
             display: flex;
             justify-content: center;
+            gap: 20px;
+        }
+        p {
+            margin: 5px;
         }
     </style>
 </head>
 
 <body>
     <h1>Grafico comparativo entre regiones elegidas por el usuario</h1>
+    <div class="lista">
+        <select id="lista1">
+        </select>
+        <p>VS</p>
+        <select id="lista2">
+        </select>
+        <button id="btnComparar">Comparar</button>
+    </div>
 
     <div id="graficos"></div>
 
@@ -32,28 +44,19 @@
         document.addEventListener('DOMContentLoaded', init);
         function init() {
             const graficos = document.querySelector('#graficos');
-            const datosRegiones = [];
-            
+            let datosRegiones = [];
+
             // Peticion AJAX
             const request = {
                 method: 'GET'
             }
             fetch("/data.json", request)
                 .then(response => response.json())
-                .then(data => {
-                    for (let i = 0; i < data.length-1; i+=2) {
-                        let region1 = data[i];
-                        let region2 = data[i+1];
+                .then(data => { 
+                    datosRegiones = [...data]
 
-                        let div = document.createElement('div');
-                        div.setAttribute('id', `${region1.region}-${region2.region}`);
-                        graficos.appendChild(div);
-                        
-                        crearGrafico(region1, region2);
-                    }
 
                 });
-
 
             function crearGrafico(region1, region2) {
                 google.charts.load('current', { packages: ['corechart', 'line'] });
