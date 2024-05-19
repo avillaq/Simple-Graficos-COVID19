@@ -41,22 +41,20 @@
                 .then(response => response.json())
                 .then(data => {
                     for (let i = 0; i < data.length-1; i+=2) {
-                        let region1 = data[i].region;
-                        let region2 = data[i+1].region;
+                        let region1 = data[i];
+                        let region2 = data[i+1];
 
                         let div = document.createElement('div');
-                        div.setAttribute('id', `${region1}-${region2}`);
+                        div.setAttribute('id', `${region1.region}-${region2.region}`);
                         graficos.appendChild(div);
                         
                         crearGrafico(region1, region2);
                     }
 
-                    
                 });
             function crearGrafico(region1, region2) {
                 google.charts.load('current', { packages: ['corechart', 'line'] });
                 google.charts.setOnLoadCallback(drawBasic);
-
                 function drawBasic() {
                     var dataTable = new google.visualization.DataTable();
                     dataTable.addColumn('string', 'fecha');
