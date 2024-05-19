@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Regiones</title>
+    <style>
+        ul {
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .lista {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Grafico comparativo entre regiones excepto Lima y Callao</h1>
+
+    <div id="chart_div"></div>
+
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', init);
+        function init() {
+            google.charts.load('current', { packages: ['corechart', 'line'] });
+            google.charts.setOnLoadCallback(drawBasic);
+
+            function drawBasic() {
+
+                var dataTable = new google.visualization.DataTable();
+                dataTable.addColumn('string', 'fecha');
+
+                // Peticion AJAX
+                let datosRegiones = []
+
+                const request = {
+                    method: 'GET'
+                }
+                fetch("/data.json", request)
+                    .then(response => response.json())
+                    .then(data => {
+                        data = data.filter(region => region.region != 'Lima' && region.region != 'Callao');
+
+                        data.forEach(i => {
+                            dataTable.addColumn("number", i.region);
+                        });
+                        
+                        let numeroTotalDias = data[0].confirmed.length;
+                        for (let i = 0; i < numeroTotalDias; i++) {
+                            let fila = [data[0].confirmed[i].date];
+                            data.forEach(region => {
+                                fila.push(parseInt(region.confirmed[i].value));
+                            });
+                            datosRegiones.push(fila);
+                        }
+
+                        dataTable.addRows(datosRegiones);
+
+                        var options = {
+                            hAxis: {
+                                title: 'Fecha desde Marzo 6 hasta Mayo 9'
+                            },
+                            vAxis: {
+                                title: 'Confirmados'
+                            },
+                            'width': 1500,
+                            'height': 600
+                        };
+
+                        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+                        chart.draw(dataTable, options);
+
+                    });
+
+
+            }
+        }
+
+    </script>
+</body>
+
+</html>
