@@ -75,6 +75,7 @@
             btnComparar.addEventListener('click', () => {
                 let region1 = datosRegiones.find(region => region.region === lista1.value);
                 let region2 = datosRegiones.find(region => region.region === lista2.value);
+                crearGrafico(region1, region2);
             });
 
             function crearGrafico(region1, region2) {
@@ -110,7 +111,7 @@
                         'height': 600
                     };
 
-                    var chart = new google.visualization.LineChart(document.getElementById(`${region1.region}-${region2.region}`));
+                    var chart = new google.visualization.LineChart(document.getElementById("graficos"));
 
                     chart.draw(dataTable, options);
 
