@@ -72,6 +72,11 @@
 
                 });
 
+            btnComparar.addEventListener('click', () => {
+                let region1 = datosRegiones.find(region => region.region === lista1.value);
+                let region2 = datosRegiones.find(region => region.region === lista2.value);
+            });
+
             function crearGrafico(region1, region2) {
                 google.charts.load('current', { packages: ['corechart', 'line'] });
                 google.charts.setOnLoadCallback(drawBasic);
