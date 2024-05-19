@@ -40,12 +40,12 @@
             fetch("/data.json", request)
                 .then(response => response.json())
                 .then(data => {
-                    for (let i = 0; i < data.length; i+=2) {
+                    for (let i = 0; i < data.length-1; i+=2) {
                         let region1 = data[i].region;
                         let region2 = data[i+1].region;
 
                         let div = document.createElement('div');
-                        div.getAttribute('id', region1 + region2);
+                        div.setAttribute('id', `${region1}-${region2}`);
                         graficos.appendChild(div);
                         
                         crearGrafico(region1, region2);
@@ -65,12 +65,12 @@
 
                     let datosRegiones = [];
 
-                    let numeroTotalDias = data[0].confirmed.length;
+                    let numeroTotalDias = region1.confirmed.length;
                     for (let i = 0; i < numeroTotalDias; i++) {
-                        let fila = [data[0].confirmed[i].date];
-                        data.forEach(region => {
-                            fila.push(parseInt(region.confirmed[i].value));
-                        });
+                        let fila = [region1.confirmed[i].date];
+                        fila.push(parseInt(region1.confirmed[i].value));
+                        fila.push(parseInt(region2.confirmed[i].value));
+          
                         datosRegiones.push(fila);
                     }
 
