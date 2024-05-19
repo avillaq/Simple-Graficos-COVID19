@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Regiones</title>
+    <style>
+        ul {
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .lista {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Grafico comparativo entre regiones elegidas por el usuario</h1>
+
+    <div id="graficos"></div>
+
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', init);
+        function init() {
+            const graficos = document.querySelector('#graficos');
+            const datosRegiones = [];
+            
+            // Peticion AJAX
+            const request = {
+                method: 'GET'
+            }
+            fetch("/data.json", request)
+                .then(response => response.json())
+                .then(data => {
+                    for (let i = 0; i < data.length-1; i+=2) {
+                        let region1 = data[i];
+                        let region2 = data[i+1];
+
+                        let div = document.createElement('div');
+                        div.setAttribute('id', `${region1.region}-${region2.region}`);
+                        graficos.appendChild(div);
+                        
+                        crearGrafico(region1, region2);
+                    }
+
+                });
+
+
+            function crearGrafico(region1, region2) {
+                google.charts.load('current', { packages: ['corechart', 'line'] });
+                google.charts.setOnLoadCallback(drawBasic);
+                function drawBasic() {
+                    var dataTable = new google.visualization.DataTable();
+                    dataTable.addColumn('string', 'fecha');
+                    dataTable.addColumn('number', region1.region);
+                    dataTable.addColumn('number', region2.region);
+
+                    let datosRegiones = [];
+
+                    let numeroTotalDias = region1.confirmed.length;
+                    for (let i = 0; i < numeroTotalDias; i++) {
+                        let fila = [region1.confirmed[i].date];
+                        fila.push(parseInt(region1.confirmed[i].value));
+                        fila.push(parseInt(region2.confirmed[i].value));
+          
+                        datosRegiones.push(fila);
+                    }
+
+                    dataTable.addRows(datosRegiones);
+
+                    var options = {
+                        hAxis: {
+                            title: 'Fecha desde Marzo 6 hasta Mayo 9'
+                        },
+                        vAxis: {
+                            title: 'Confirmados'
+                        },
+                        'width': 1500,
+                        'height': 600
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById(`${region1.region}-${region2.region}`));
+
+                    chart.draw(dataTable, options);
+
+
+
+                }
+
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>
